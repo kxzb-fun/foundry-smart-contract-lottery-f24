@@ -1,66 +1,28 @@
-## Foundry
+# Foundry Smart Contrcat Lootery
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+this is a sample contract Roffle.
 
-Foundry consists of:
+## Lesson 4: Creating custom errors
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+- changed the visibility from public to external. External is more gas efficient
+- Raffle__NotEnoughEthSent(),using the Raffle__ prefix
 
-## Documentation
-
-https://book.getfoundry.sh/
-
-## Usage
-
-### Build
-
-```shell
-$ forge build
+```solidity
+require(msg.value >= i_entranceFee, "Not enough ETH sent");
 ```
 
-### Test
+Note: The require statement is used to enforce certain conditions at runtime. If the condition specified in the require statement evaluates to false, the transaction is reverted, and any changes made to the state within that transaction are undone. This is useful for ensuring that certain prerequisites or validations are met before executing further logic in a smart contract.
 
-```shell
-$ forge test
+```solidity
+if (msg.value < i_entranceFee) {
+    revert Raffle__NotEnoughEthSent();
+}
 ```
 
-### Format
+this is not readable, but more gas-efficient than this way `require(msg.value >= i_entranceFee, "Not enough ETH send!");`
 
-```shell
-$ forge fmt
-```
+this is the most gas-efficient in new solidity version 0.8.26
 
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
+```solidity
+require(msg.value >= i_entranceFee,Raffle__SendMoreEthToEnterRoffle());
 ```

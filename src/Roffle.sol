@@ -23,6 +23,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
+// Raffle__NotEnoughEthSent()
+
 /**
  * @title A sample Roffle contract
  * @author kxzb.fun
@@ -30,6 +32,9 @@ pragma solidity ^0.8.19;
  * @dev Implemets Chainlink VRFv2.5
  */
 contract Roffle {
+    /* ERRORS */
+    Raffle__SendMoreEthToEnterRoffle()
+
     // Users should be able to enter the raffle by paying a ticket price;
     // At some point, we should be able to pick a winner out of the registered users.
     uint256 private immutable i_entranceFee;
@@ -38,7 +43,15 @@ contract Roffle {
         i_entranceFee = entranceFee;
     }
 
-    function enterRaffle() public payable {}
+    function enterRaffle() public payable {
+        // require(msg.value >= i_entranceFee, "Not enough ETH send!");
+        // if (msg.value < i_entranceFee) {
+        //     revert Raffle__NotEnoughEthSent();
+        // }
+
+        require(msg.value >= i_entranceFee,Raffle__SendMoreEthToEnterRoffle());
+        
+    }
 
     function pickWinner() public {}
 
