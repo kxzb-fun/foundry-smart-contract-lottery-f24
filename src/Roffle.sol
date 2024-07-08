@@ -33,7 +33,7 @@ pragma solidity ^0.8.19;
  */
 contract Roffle {
     /* ERRORS */
-    Raffle__SendMoreEthToEnterRoffle()
+    error Raffle__SendMoreEthToEnterRoffle();
 
     // Users should be able to enter the raffle by paying a ticket price;
     // At some point, we should be able to pick a winner out of the registered users.
@@ -44,13 +44,9 @@ contract Roffle {
     }
 
     function enterRaffle() public payable {
-        // require(msg.value >= i_entranceFee, "Not enough ETH send!");
-        // if (msg.value < i_entranceFee) {
-        //     revert Raffle__NotEnoughEthSent();
-        // }
-
-        require(msg.value >= i_entranceFee,Raffle__SendMoreEthToEnterRoffle());
-        
+        if (msg.value < i_entranceFee) {
+            revert Raffle__SendMoreEthToEnterRoffle();
+        }
     }
 
     function pickWinner() public {}
