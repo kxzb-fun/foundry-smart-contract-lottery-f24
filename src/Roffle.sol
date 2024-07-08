@@ -38,16 +38,21 @@ contract Roffle {
     // Users should be able to enter the raffle by paying a ticket price;
     // At some point, we should be able to pick a winner out of the registered users.
     uint256 private immutable i_entranceFee;
+    // @dev The duration in the lottory in seconds
+    uint256 private immutable i_interval;
     address payable[] s_player;
+    uint256 private s_lastedTimeStamp;
 
     /* EVENTS */
     event RoffleEntered(address indexed player);
 
-    constructor(uint256 entranceFee) {
+    constructor(uint256 entranceFee, uint256 interval) {
         i_entranceFee = entranceFee;
+        i_interval = interval;
+        s_lastedTimeStamp = block.timestamp;
     }
 
-    function enterRaffle() public payable {
+    function enterRaffle() external payable {
         if (msg.value < i_entranceFee) {
             revert Raffle__SendMoreEthToEnterRoffle();
         }
@@ -56,7 +61,16 @@ contract Roffle {
         emit RoffleEntered(msg.sender);
     }
 
-    function pickWinner() public {}
+    /**
+     * 1. Get a random number
+     * 2. Use the random number to pick a player
+     * 3. Be automatically called
+     */
+    function pickWinner() external view {
+        if ((block.timestamp - s_lastedTimeStamp) > i_interval) {
+            revert();
+        }
+    }
 
     /** Getter Function */
     function getEntranceFee() external view returns (uint256) {
