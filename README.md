@@ -26,3 +26,16 @@ this is the most gas-efficient in new solidity version 0.8.26
 ```solidity
 require(msg.value >= i_entranceFee,Raffle__SendMoreEthToEnterRoffle());
 ```
+
+## 5. Smart contracts events
+
+1. Makes migration easier
+2. Makes front end "indexing" easier
+
+<https://docs.soliditylang.org/en/v0.8.25/contracts.html#events>
+
+### Purpose of Events
+
+1. Logging: Events are primarily used for logging significant actions in your smart contract. These logs are stored on the blockchain.
+2. Interfacing with Frontend: Events can be used to notify a frontend application of specific occurrences, such as a new player entering the raffle.
+3. Gas Efficiency: Events are more gas-efficient for storing data compared to writing data to storage variables.

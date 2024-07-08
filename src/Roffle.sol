@@ -38,6 +38,10 @@ contract Roffle {
     // Users should be able to enter the raffle by paying a ticket price;
     // At some point, we should be able to pick a winner out of the registered users.
     uint256 private immutable i_entranceFee;
+    address payable[] s_player;
+
+    /* EVENTS */
+    event RoffleEntered(address indexed player);
 
     constructor(uint256 entranceFee) {
         i_entranceFee = entranceFee;
@@ -47,6 +51,9 @@ contract Roffle {
         if (msg.value < i_entranceFee) {
             revert Raffle__SendMoreEthToEnterRoffle();
         }
+
+        s_player.push(payable(msg.sender));
+        emit RoffleEntered(msg.sender);
     }
 
     function pickWinner() public {}
