@@ -37,6 +37,7 @@ import {VRFV2PlusClient} from "@chainlink/contracts/src/v0.8/vrf/dev/libraries/V
 contract Roffle is VRFConsumerBaseV2Plus {
     /* ERRORS */
     error Raffle__SendMoreEthToEnterRoffle();
+    error Raffle__TransferFailed();
 
     // Users should be able to enter the raffle by paying a ticket price;
     // At some point, we should be able to pick a winner out of the registered users.
@@ -51,6 +52,8 @@ contract Roffle is VRFConsumerBaseV2Plus {
     uint256 private s_lastedTimeStamp;
     uint16 private constant REQUEST_CONFIRMATIONS = 3;
     uint32 private constant NUM_WORDS = 1;
+    address payable[] private s_players;
+    address payable private s_recentWinner;
 
     /* EVENTS */
     event RoffleEntered(address indexed player);
@@ -107,7 +110,14 @@ contract Roffle is VRFConsumerBaseV2Plus {
     function fulfillRandomWords(
         uint256 requestId,
         uint256[] calldata randomWords
-    ) internal override {}
+    ) internal override {
+        uint256 indexOfWinner = randomWords[0] % s_players.length;
+        address payable winner = s_players[indexOfWinner];
+        (bool success, ) = winner.call{value: address(this).balance}("");
+        if (!success) {
+            revert Raffle__TransferFailed();
+        }
+    }
 
     /**
      * Getter Function
