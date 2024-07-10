@@ -95,3 +95,11 @@ contract Roffle is VRFConsumerBaseV2Plus {
     //some code here ...
 }
 ```
+
+## Lesson 9. Implementing Vrf Fulfil
+
+## Lesson 10. The modulo operation
+
+## Lesson 11: Implementing the lottery state - Enum
+
+## Lesson 12: Lottery restart - Resetting an Array
